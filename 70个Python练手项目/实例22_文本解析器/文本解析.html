@@ -1,0 +1,298 @@
+<article class="baidu_pl">
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-1a85854398.css">
+                <div id="content_views" class="markdown_views">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                        <path stroke-linecap="round" d="M5,0 0,2.5 5,5z" id="raphael-marker-block" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path>
+                    </svg>
+                    <h1 id="一实验介绍"><a name="t0"></a>一、实验介绍</h1> 
+<ul><li><p>1.1 实验内容 <br> 讲解一个使用 <a href="https://so.csdn.net/so/search?from=pc_blog_highlight&amp;q=Python" target="_blank" class="hl hl-1">Python</a> 来解析纯文本生成一个 HTML 页面的小程序。 <br> 将学习和实践以下知识点： <br> Python 基本语法 <br> HTML 标记语言</p></li><li><p>1.2 实验知识点 <br> Python：一种面向对象、解释型计算机程序设计语言，用它可以做 Web 开发、图形处理、文本处理和数学处理等等。 <br> HTML：超文本标记语言，主要用来实现网页。</p></li><li><p>1.3 实验环境 <br> Python 3.6.5 <br> pychram</p></li><li><p>1.4 实验结果 <br> 纯文本文件：</p></li></ul> 
+<pre class="prettyprint" name="code"><code class="hljs haml has-numbering" onclick="mdcp.copyCode(event)" style="position: unset;">冰灯
+
+冰灯是流行于中国北方的一种民间艺术，也是冰雕艺术的一种形式。
+
+-<span class="ruby"><span class="hljs-number">1</span> 简介
+</span>
+-<span class="ruby"><span class="hljs-number">2</span> 起源
+</span>
+-<span class="ruby"><span class="hljs-number">3</span> 发展及现状
+</span>
+-<span class="ruby"><span class="hljs-number">4</span> 冰雕
+</span>
+-<span class="ruby"><span class="hljs-number">5</span> 参见</span><div class="hljs-button {2}" data-title="复制（为作者贡献原力分）" data-report-click="{&quot;spm&quot;:&quot;1001.2101.3001.4259&quot;}"></div></code><ul class="pre-numbering" style=""><li style="color: rgb(153, 153, 153);">1</li><li style="color: rgb(153, 153, 153);">2</li><li style="color: rgb(153, 153, 153);">3</li><li style="color: rgb(153, 153, 153);">4</li><li style="color: rgb(153, 153, 153);">5</li><li style="color: rgb(153, 153, 153);">6</li><li style="color: rgb(153, 153, 153);">7</li><li style="color: rgb(153, 153, 153);">8</li><li style="color: rgb(153, 153, 153);">9</li><li style="color: rgb(153, 153, 153);">10</li><li style="color: rgb(153, 153, 153);">11</li><li style="color: rgb(153, 153, 153);">12</li><li style="color: rgb(153, 153, 153);">13</li></ul></pre> 
+<p>解析后生成的 HTML 页面如下图</p> 
+<p><img src="https://img-blog.csdn.net/20180806140630448?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ppYTY2NjY2Ng==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述" title=""></p> 
+<h1 id="二项目文件结构"><a name="t1"></a>二、项目文件结构</h1> 
+<p>本项目中将创建以下的代码文件，每个文件的作用简介如下：</p> 
+<blockquote> 
+ <p>util.py：实现文本块生成器把纯文本分成一个一个的文本块，以便接下来对每一个文本块进行解析 <br> handlers.py：为文本块打上合适的 HTML 标记 <br> rules.py：设计一定的规则来判断每个文本块交给处理程序将要加什么标记 <br> markup.py：对整个文本进行解析的程序</p> 
+</blockquote> 
+<h1 id="三实验步骤"><a name="t2"></a>三、实验步骤</h1> 
+<p>一共有文本块生成器、处理程序、规则、解析和运行与测试五个步骤。</p> 
+<h3 id="31-文本块生成器"><a name="t3"></a>3.1 文本块生成器</h3> 
+<p>首先我们需要有一个文本块生成器把纯文本分成一个一个的文本块，以便接下来对每一个文本块进行解析，util.py 代码如下：</p> 
+<pre class="prettyprint" name="code"><code class="hljs python has-numbering" onclick="mdcp.copyCode(event)" style="position: unset;"><span class="hljs-comment">#!/usr/bin/python</span>
+<span class="hljs-comment"># encoding: utf-8</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">lines</span><span class="hljs-params">(file)</span>:</span>
+    <span class="hljs-string">"""
+    生成器,在文本最后加一空行
+    """</span>
+    <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> file: <span class="hljs-keyword">yield</span> line
+    <span class="hljs-keyword">yield</span> <span class="hljs-string">'\n'</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">blocks</span><span class="hljs-params">(file)</span>:</span>
+    <span class="hljs-string">"""
+    生成器,生成单独的文本块
+    """</span>
+    block = []
+    <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> lines(file):
+        <span class="hljs-keyword">if</span> line.strip():
+            block.append(line)
+        <span class="hljs-keyword">elif</span> block:
+            <span class="hljs-keyword">yield</span> <span class="hljs-string">''</span>.join(block).strip()
+            block = []<div class="hljs-button {2}" data-title="复制（为作者贡献原力分）" data-report-click="{&quot;spm&quot;:&quot;1001.2101.3001.4259&quot;}"></div></code><ul class="pre-numbering" style=""><li style="color: rgb(153, 153, 153);">1</li><li style="color: rgb(153, 153, 153);">2</li><li style="color: rgb(153, 153, 153);">3</li><li style="color: rgb(153, 153, 153);">4</li><li style="color: rgb(153, 153, 153);">5</li><li style="color: rgb(153, 153, 153);">6</li><li style="color: rgb(153, 153, 153);">7</li><li style="color: rgb(153, 153, 153);">8</li><li style="color: rgb(153, 153, 153);">9</li><li style="color: rgb(153, 153, 153);">10</li><li style="color: rgb(153, 153, 153);">11</li><li style="color: rgb(153, 153, 153);">12</li><li style="color: rgb(153, 153, 153);">13</li><li style="color: rgb(153, 153, 153);">14</li><li style="color: rgb(153, 153, 153);">15</li><li style="color: rgb(153, 153, 153);">16</li><li style="color: rgb(153, 153, 153);">17</li><li style="color: rgb(153, 153, 153);">18</li><li style="color: rgb(153, 153, 153);">19</li><li style="color: rgb(153, 153, 153);">20</li><li style="color: rgb(153, 153, 153);">21</li></ul></pre> 
+<p>strip() 函数可以去除一个字符串前后的空格以及换行符，如果在strip()函数添加不同的参数，如strip(“me”)，则可以去除字符串前后的”me”字符。</p> 
+<blockquote> 
+ <blockquote> 
+  <blockquote> 
+   <p>s = ” This is me\n” <br> s = s.strip() <br> s <br> ‘This is me’ <br> s = s.strip(“me”) <br> s <br> ‘This is ‘</p> 
+  </blockquote> 
+ </blockquote> 
+</blockquote> 
+<p>yield()会返回一个生成器(generator)。如果对generator以及对 yiels 语句不太熟悉，建议先阅读yield解释(<a href="https://pyzh.readthedocs.io/en/latest/the-python-yield-keyword-explained.html">https://pyzh.readthedocs.io/en/latest/the-python-yield-keyword-explained.html</a>)。</p> 
+<h3 id="32-处理程序"><a name="t4"></a>3.2 处理程序</h3> 
+<p>假设我们已经知道一个文本块是 title/paragraph/heading/list，我们通过 handlers.py 给他们打上合适的 HTML 标记。代码如下：</p> 
+<pre class="prettyprint" name="code"><code class="hljs python has-numbering" onclick="mdcp.copyCode(event)" style="position: unset;"><span class="hljs-string">'''对整个文本进行解析的程序'''</span>
+<span class="hljs-comment">#!/usr/bin/python</span>
+<span class="hljs-comment"># encoding: utf-8</span>
+
+<span class="hljs-keyword">import</span> sys, re
+<span class="hljs-keyword">from</span> handlers <span class="hljs-keyword">import</span> *
+<span class="hljs-keyword">from</span> util <span class="hljs-keyword">import</span> *
+<span class="hljs-keyword">from</span> rules <span class="hljs-keyword">import</span> *
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Parser</span>:</span>
+    <span class="hljs-string">"""
+    解析器父类
+    """</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, handler)</span>:</span>
+        self.handler = handler
+        self.rules = []
+        self.filters = []
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">addRule</span><span class="hljs-params">(self, rule)</span>:</span>
+        <span class="hljs-string">"""
+        添加规则
+        """</span>
+        self.rules.append(rule)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">addFilter</span><span class="hljs-params">(self, pattern, name)</span>:</span>
+        <span class="hljs-string">"""
+        添加过滤器
+        """</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">filter</span><span class="hljs-params">(block, handler)</span>:</span>
+            <span class="hljs-keyword">return</span> re.sub(pattern, handler.sub(name), block)
+        self.filters.append(filter)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse</span><span class="hljs-params">(self, file)</span>:</span>
+        <span class="hljs-string">"""
+        解析
+        """</span>
+        self.handler.start(<span class="hljs-string">'document'</span>)
+        <span class="hljs-keyword">for</span> block <span class="hljs-keyword">in</span> blocks(file):
+            <span class="hljs-keyword">for</span> filter <span class="hljs-keyword">in</span> self.filters:
+                block = filter(block, self.handler)
+            <span class="hljs-keyword">for</span> rule <span class="hljs-keyword">in</span> self.rules:
+                <span class="hljs-keyword">if</span> rule.condition(block):
+                    last = rule.action(block, self.handler)
+                    <span class="hljs-keyword">if</span> last: <span class="hljs-keyword">break</span>
+        self.handler.end(<span class="hljs-string">'document'</span>)
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BasicTextParser</span><span class="hljs-params">(Parser)</span>:</span>
+    <span class="hljs-string">"""
+    纯文本解析器
+    """</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, handler)</span>:</span>
+        Parser.__init__(self, handler)
+        self.addRule(ListRule())
+        self.addRule(ListItemRule())
+        self.addRule(TitleRule())
+        self.addRule(HeadingRule())
+        self.addRule(ParagraphRule())
+
+        self.addFilter(<span class="hljs-string">r'\*(.+?)\*'</span>, <span class="hljs-string">'emphasis'</span>)
+        self.addFilter(<span class="hljs-string">r'(http://[\.a-zA-Z/]+)'</span>, <span class="hljs-string">'url'</span>)
+        self.addFilter(<span class="hljs-string">r'([\.a-zA-Z]+@[\.a-zA-Z]+[a-zA-Z]+)'</span>, <span class="hljs-string">'mail'</span>)
+
+<span class="hljs-string">"""
+运行程序
+"""</span>
+handler = HTMLRenderer()
+parser = BasicTextParser(handler)
+parser.parse(sys.stdin)<div class="hljs-button {2}" data-title="复制（为作者贡献原力分）" data-report-click="{&quot;spm&quot;:&quot;1001.2101.3001.4259&quot;}"></div></code><ul class="pre-numbering" style=""><li style="color: rgb(153, 153, 153);">1</li><li style="color: rgb(153, 153, 153);">2</li><li style="color: rgb(153, 153, 153);">3</li><li style="color: rgb(153, 153, 153);">4</li><li style="color: rgb(153, 153, 153);">5</li><li style="color: rgb(153, 153, 153);">6</li><li style="color: rgb(153, 153, 153);">7</li><li style="color: rgb(153, 153, 153);">8</li><li style="color: rgb(153, 153, 153);">9</li><li style="color: rgb(153, 153, 153);">10</li><li style="color: rgb(153, 153, 153);">11</li><li style="color: rgb(153, 153, 153);">12</li><li style="color: rgb(153, 153, 153);">13</li><li style="color: rgb(153, 153, 153);">14</li><li style="color: rgb(153, 153, 153);">15</li><li style="color: rgb(153, 153, 153);">16</li><li style="color: rgb(153, 153, 153);">17</li><li style="color: rgb(153, 153, 153);">18</li><li style="color: rgb(153, 153, 153);">19</li><li style="color: rgb(153, 153, 153);">20</li><li style="color: rgb(153, 153, 153);">21</li><li style="color: rgb(153, 153, 153);">22</li><li style="color: rgb(153, 153, 153);">23</li><li style="color: rgb(153, 153, 153);">24</li><li style="color: rgb(153, 153, 153);">25</li><li style="color: rgb(153, 153, 153);">26</li><li style="color: rgb(153, 153, 153);">27</li><li style="color: rgb(153, 153, 153);">28</li><li style="color: rgb(153, 153, 153);">29</li><li style="color: rgb(153, 153, 153);">30</li><li style="color: rgb(153, 153, 153);">31</li><li style="color: rgb(153, 153, 153);">32</li><li style="color: rgb(153, 153, 153);">33</li><li style="color: rgb(153, 153, 153);">34</li><li style="color: rgb(153, 153, 153);">35</li><li style="color: rgb(153, 153, 153);">36</li><li style="color: rgb(153, 153, 153);">37</li><li style="color: rgb(153, 153, 153);">38</li><li style="color: rgb(153, 153, 153);">39</li><li style="color: rgb(153, 153, 153);">40</li><li style="color: rgb(153, 153, 153);">41</li><li style="color: rgb(153, 153, 153);">42</li><li style="color: rgb(153, 153, 153);">43</li><li style="color: rgb(153, 153, 153);">44</li><li style="color: rgb(153, 153, 153);">45</li><li style="color: rgb(153, 153, 153);">46</li><li style="color: rgb(153, 153, 153);">47</li><li style="color: rgb(153, 153, 153);">48</li><li style="color: rgb(153, 153, 153);">49</li><li style="color: rgb(153, 153, 153);">50</li><li style="color: rgb(153, 153, 153);">51</li><li style="color: rgb(153, 153, 153);">52</li><li style="color: rgb(153, 153, 153);">53</li><li style="color: rgb(153, 153, 153);">54</li><li style="color: rgb(153, 153, 153);">55</li><li style="color: rgb(153, 153, 153);">56</li><li style="color: rgb(153, 153, 153);">57</li><li style="color: rgb(153, 153, 153);">58</li><li style="color: rgb(153, 153, 153);">59</li><li style="color: rgb(153, 153, 153);">60</li><li style="color: rgb(153, 153, 153);">61</li><li style="color: rgb(153, 153, 153);">62</li><li style="color: rgb(153, 153, 153);">63</li><li style="color: rgb(153, 153, 153);">64</li><li style="color: rgb(153, 153, 153);">65</li><li style="color: rgb(153, 153, 153);">66</li><li style="color: rgb(153, 153, 153);">67</li><li style="color: rgb(153, 153, 153);">68</li></ul></pre> 
+<p>在上面的代码中 callable() 函数能够检查一个函数是否能够被调用。如果能够被调用返回True。</p> 
+<p>gerattr()函数则是返回一个对象的属性值。举例来说，getattr(x, ‘foo’, None) 就相当于是 x.foo，而如果没有这个属性值foobar，则返回我们设定的默认值None。</p> 
+<h3 id="33-规则"><a name="t5"></a>3.3 规则</h3> 
+<p>有了处理程序和文本块生成器，接下来就需要一定的规则来判断每个文本块交给处理程序将要加什么标记，rules.py 代码如下：</p> 
+<pre class="prettyprint" name="code"><code class="hljs python has-numbering" onclick="mdcp.copyCode(event)" style="position: unset;"><span class="hljs-string">'''设计一定的规则来判断每个文本块交给处理程序将要加什么标记'''</span>
+<span class="hljs-comment">#!/usr/bin/python</span>
+<span class="hljs-comment"># encoding: utf-8</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Rule</span>:</span>
+    <span class="hljs-string">"""
+    规则父类
+    """</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">action</span><span class="hljs-params">(self, block, handler)</span>:</span>
+        <span class="hljs-string">"""
+        加标记
+        """</span>
+        handler.start(self.type)
+        handler.feed(block)
+        handler.end(self.type)
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">True</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HeadingRule</span><span class="hljs-params">(Rule)</span>:</span>
+    <span class="hljs-string">"""
+    一号标题规则
+    """</span>
+    type = <span class="hljs-string">'heading'</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">condition</span><span class="hljs-params">(self, block)</span>:</span>
+        <span class="hljs-string">"""
+        判断文本块是否符合规则
+        """</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">not</span> <span class="hljs-string">'\n'</span> <span class="hljs-keyword">in</span> block <span class="hljs-keyword">and</span> len(block) &lt;= <span class="hljs-number">70</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> block[-<span class="hljs-number">1</span>] == <span class="hljs-string">':'</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TitleRule</span><span class="hljs-params">(HeadingRule)</span>:</span>
+    <span class="hljs-string">"""
+    二号标题规则
+    """</span>
+    type = <span class="hljs-string">'title'</span>
+    first = <span class="hljs-keyword">True</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">condition</span><span class="hljs-params">(self, block)</span>:</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> self.first: <span class="hljs-keyword">return</span> <span class="hljs-keyword">False</span>
+        self.first = <span class="hljs-keyword">False</span>
+        <span class="hljs-keyword">return</span> HeadingRule.condition(self, block)
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ListItemRule</span><span class="hljs-params">(Rule)</span>:</span>
+    <span class="hljs-string">"""
+    列表项规则
+    """</span>
+    type = <span class="hljs-string">'listitem'</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">condition</span><span class="hljs-params">(self, block)</span>:</span>
+        <span class="hljs-keyword">return</span> block[<span class="hljs-number">0</span>] == <span class="hljs-string">'-'</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">action</span><span class="hljs-params">(self, block, handler)</span>:</span>
+        handler.start(self.type)
+        handler.feed(block[<span class="hljs-number">1</span>:].strip())
+        handler.end(self.type)
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">True</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ListRule</span><span class="hljs-params">(ListItemRule)</span>:</span>
+    <span class="hljs-string">"""
+    列表规则
+    """</span>
+    type = <span class="hljs-string">'list'</span>
+    inside = <span class="hljs-keyword">False</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">condition</span><span class="hljs-params">(self, block)</span>:</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">True</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">action</span><span class="hljs-params">(self, block, handler)</span>:</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> self.inside <span class="hljs-keyword">and</span> ListItemRule.condition(self, block):
+            handler.start(self.type)
+            self.inside = <span class="hljs-keyword">True</span>
+        <span class="hljs-keyword">elif</span> self.inside <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> ListItemRule.condition(self, block):
+            handler.end(self.type)
+            self.inside = <span class="hljs-keyword">False</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">False</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ParagraphRule</span><span class="hljs-params">(Rule)</span>:</span>
+    <span class="hljs-string">"""
+    段落规则
+    """</span>
+    type = <span class="hljs-string">'paragraph'</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">condition</span><span class="hljs-params">(self, block)</span>:</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">True</span><div class="hljs-button {2}" data-title="复制（为作者贡献原力分）" data-report-click="{&quot;spm&quot;:&quot;1001.2101.3001.4259&quot;}"></div></code><ul class="pre-numbering" style=""><li style="color: rgb(153, 153, 153);">1</li><li style="color: rgb(153, 153, 153);">2</li><li style="color: rgb(153, 153, 153);">3</li><li style="color: rgb(153, 153, 153);">4</li><li style="color: rgb(153, 153, 153);">5</li><li style="color: rgb(153, 153, 153);">6</li><li style="color: rgb(153, 153, 153);">7</li><li style="color: rgb(153, 153, 153);">8</li><li style="color: rgb(153, 153, 153);">9</li><li style="color: rgb(153, 153, 153);">10</li><li style="color: rgb(153, 153, 153);">11</li><li style="color: rgb(153, 153, 153);">12</li><li style="color: rgb(153, 153, 153);">13</li><li style="color: rgb(153, 153, 153);">14</li><li style="color: rgb(153, 153, 153);">15</li><li style="color: rgb(153, 153, 153);">16</li><li style="color: rgb(153, 153, 153);">17</li><li style="color: rgb(153, 153, 153);">18</li><li style="color: rgb(153, 153, 153);">19</li><li style="color: rgb(153, 153, 153);">20</li><li style="color: rgb(153, 153, 153);">21</li><li style="color: rgb(153, 153, 153);">22</li><li style="color: rgb(153, 153, 153);">23</li><li style="color: rgb(153, 153, 153);">24</li><li style="color: rgb(153, 153, 153);">25</li><li style="color: rgb(153, 153, 153);">26</li><li style="color: rgb(153, 153, 153);">27</li><li style="color: rgb(153, 153, 153);">28</li><li style="color: rgb(153, 153, 153);">29</li><li style="color: rgb(153, 153, 153);">30</li><li style="color: rgb(153, 153, 153);">31</li><li style="color: rgb(153, 153, 153);">32</li><li style="color: rgb(153, 153, 153);">33</li><li style="color: rgb(153, 153, 153);">34</li><li style="color: rgb(153, 153, 153);">35</li><li style="color: rgb(153, 153, 153);">36</li><li style="color: rgb(153, 153, 153);">37</li><li style="color: rgb(153, 153, 153);">38</li><li style="color: rgb(153, 153, 153);">39</li><li style="color: rgb(153, 153, 153);">40</li><li style="color: rgb(153, 153, 153);">41</li><li style="color: rgb(153, 153, 153);">42</li><li style="color: rgb(153, 153, 153);">43</li><li style="color: rgb(153, 153, 153);">44</li><li style="color: rgb(153, 153, 153);">45</li><li style="color: rgb(153, 153, 153);">46</li><li style="color: rgb(153, 153, 153);">47</li><li style="color: rgb(153, 153, 153);">48</li><li style="color: rgb(153, 153, 153);">49</li><li style="color: rgb(153, 153, 153);">50</li><li style="color: rgb(153, 153, 153);">51</li><li style="color: rgb(153, 153, 153);">52</li><li style="color: rgb(153, 153, 153);">53</li><li style="color: rgb(153, 153, 153);">54</li><li style="color: rgb(153, 153, 153);">55</li><li style="color: rgb(153, 153, 153);">56</li><li style="color: rgb(153, 153, 153);">57</li><li style="color: rgb(153, 153, 153);">58</li><li style="color: rgb(153, 153, 153);">59</li><li style="color: rgb(153, 153, 153);">60</li><li style="color: rgb(153, 153, 153);">61</li><li style="color: rgb(153, 153, 153);">62</li><li style="color: rgb(153, 153, 153);">63</li><li style="color: rgb(153, 153, 153);">64</li><li style="color: rgb(153, 153, 153);">65</li><li style="color: rgb(153, 153, 153);">66</li><li style="color: rgb(153, 153, 153);">67</li><li style="color: rgb(153, 153, 153);">68</li><li style="color: rgb(153, 153, 153);">69</li><li style="color: rgb(153, 153, 153);">70</li><li style="color: rgb(153, 153, 153);">71</li><li style="color: rgb(153, 153, 153);">72</li><li style="color: rgb(153, 153, 153);">73</li><li style="color: rgb(153, 153, 153);">74</li><li style="color: rgb(153, 153, 153);">75</li><li style="color: rgb(153, 153, 153);">76</li><li style="color: rgb(153, 153, 153);">77</li><li style="color: rgb(153, 153, 153);">78</li><li style="color: rgb(153, 153, 153);">79</li><li style="color: rgb(153, 153, 153);">80</li></ul></pre> 
+<p>3.4 解析 <br> 当我们知道每一个文本块进行怎么样的处理，交给谁去处理之后，我们就可以对整个文本进行解析了，markup.py 代码如下：</p> 
+<pre class="prettyprint" name="code"><code class="hljs python has-numbering" onclick="mdcp.copyCode(event)" style="position: unset;"><span class="hljs-string">'''对整个文本进行解析的程序'''</span>
+<span class="hljs-comment">#!/usr/bin/python</span>
+<span class="hljs-comment"># encoding: utf-8</span>
+
+<span class="hljs-keyword">import</span> sys, re
+<span class="hljs-keyword">from</span> handlers <span class="hljs-keyword">import</span> *
+<span class="hljs-keyword">from</span> util <span class="hljs-keyword">import</span> *
+<span class="hljs-keyword">from</span> rules <span class="hljs-keyword">import</span> *
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Parser</span>:</span>
+    <span class="hljs-string">"""
+    解析器父类
+    """</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, handler)</span>:</span>
+        self.handler = handler
+        self.rules = []
+        self.filters = []
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">addRule</span><span class="hljs-params">(self, rule)</span>:</span>
+        <span class="hljs-string">"""
+        添加规则
+        """</span>
+        self.rules.append(rule)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">addFilter</span><span class="hljs-params">(self, pattern, name)</span>:</span>
+        <span class="hljs-string">"""
+        添加过滤器
+        """</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">filter</span><span class="hljs-params">(block, handler)</span>:</span>
+            <span class="hljs-keyword">return</span> re.sub(pattern, handler.sub(name), block)
+        self.filters.append(filter)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse</span><span class="hljs-params">(self, file)</span>:</span>
+        <span class="hljs-string">"""
+        解析
+        """</span>
+        self.handler.start(<span class="hljs-string">'document'</span>)
+        <span class="hljs-keyword">for</span> block <span class="hljs-keyword">in</span> blocks(file):
+            <span class="hljs-keyword">for</span> filter <span class="hljs-keyword">in</span> self.filters:
+                block = filter(block, self.handler)
+            <span class="hljs-keyword">for</span> rule <span class="hljs-keyword">in</span> self.rules:
+                <span class="hljs-keyword">if</span> rule.condition(block):
+                    last = rule.action(block, self.handler)
+                    <span class="hljs-keyword">if</span> last: <span class="hljs-keyword">break</span>
+        self.handler.end(<span class="hljs-string">'document'</span>)
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BasicTextParser</span><span class="hljs-params">(Parser)</span>:</span>
+    <span class="hljs-string">"""
+    纯文本解析器
+    """</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, handler)</span>:</span>
+        Parser.__init__(self, handler)
+        self.addRule(ListRule())
+        self.addRule(ListItemRule())
+        self.addRule(TitleRule())
+        self.addRule(HeadingRule())
+        self.addRule(ParagraphRule())
+
+        self.addFilter(<span class="hljs-string">r'\*(.+?)\*'</span>, <span class="hljs-string">'emphasis'</span>)
+        self.addFilter(<span class="hljs-string">r'(http://[\.a-zA-Z/]+)'</span>, <span class="hljs-string">'url'</span>)
+        self.addFilter(<span class="hljs-string">r'([\.a-zA-Z]+@[\.a-zA-Z]+[a-zA-Z]+)'</span>, <span class="hljs-string">'mail'</span>)
+
+<span class="hljs-string">"""
+运行程序
+"""</span>
+handler = HTMLRenderer()
+parser = BasicTextParser(handler)
+parser.parse(sys.stdin)<div class="hljs-button {2}" data-title="复制（为作者贡献原力分）" data-report-click="{&quot;spm&quot;:&quot;1001.2101.3001.4259&quot;}"></div></code><ul class="pre-numbering" style=""><li style="color: rgb(153, 153, 153);">1</li><li style="color: rgb(153, 153, 153);">2</li><li style="color: rgb(153, 153, 153);">3</li><li style="color: rgb(153, 153, 153);">4</li><li style="color: rgb(153, 153, 153);">5</li><li style="color: rgb(153, 153, 153);">6</li><li style="color: rgb(153, 153, 153);">7</li><li style="color: rgb(153, 153, 153);">8</li><li style="color: rgb(153, 153, 153);">9</li><li style="color: rgb(153, 153, 153);">10</li><li style="color: rgb(153, 153, 153);">11</li><li style="color: rgb(153, 153, 153);">12</li><li style="color: rgb(153, 153, 153);">13</li><li style="color: rgb(153, 153, 153);">14</li><li style="color: rgb(153, 153, 153);">15</li><li style="color: rgb(153, 153, 153);">16</li><li style="color: rgb(153, 153, 153);">17</li><li style="color: rgb(153, 153, 153);">18</li><li style="color: rgb(153, 153, 153);">19</li><li style="color: rgb(153, 153, 153);">20</li><li style="color: rgb(153, 153, 153);">21</li><li style="color: rgb(153, 153, 153);">22</li><li style="color: rgb(153, 153, 153);">23</li><li style="color: rgb(153, 153, 153);">24</li><li style="color: rgb(153, 153, 153);">25</li><li style="color: rgb(153, 153, 153);">26</li><li style="color: rgb(153, 153, 153);">27</li><li style="color: rgb(153, 153, 153);">28</li><li style="color: rgb(153, 153, 153);">29</li><li style="color: rgb(153, 153, 153);">30</li><li style="color: rgb(153, 153, 153);">31</li><li style="color: rgb(153, 153, 153);">32</li><li style="color: rgb(153, 153, 153);">33</li><li style="color: rgb(153, 153, 153);">34</li><li style="color: rgb(153, 153, 153);">35</li><li style="color: rgb(153, 153, 153);">36</li><li style="color: rgb(153, 153, 153);">37</li><li style="color: rgb(153, 153, 153);">38</li><li style="color: rgb(153, 153, 153);">39</li><li style="color: rgb(153, 153, 153);">40</li><li style="color: rgb(153, 153, 153);">41</li><li style="color: rgb(153, 153, 153);">42</li><li style="color: rgb(153, 153, 153);">43</li><li style="color: rgb(153, 153, 153);">44</li><li style="color: rgb(153, 153, 153);">45</li><li style="color: rgb(153, 153, 153);">46</li><li style="color: rgb(153, 153, 153);">47</li><li style="color: rgb(153, 153, 153);">48</li><li style="color: rgb(153, 153, 153);">49</li><li style="color: rgb(153, 153, 153);">50</li><li style="color: rgb(153, 153, 153);">51</li><li style="color: rgb(153, 153, 153);">52</li><li style="color: rgb(153, 153, 153);">53</li><li style="color: rgb(153, 153, 153);">54</li><li style="color: rgb(153, 153, 153);">55</li><li style="color: rgb(153, 153, 153);">56</li><li style="color: rgb(153, 153, 153);">57</li><li style="color: rgb(153, 153, 153);">58</li><li style="color: rgb(153, 153, 153);">59</li><li style="color: rgb(153, 153, 153);">60</li><li style="color: rgb(153, 153, 153);">61</li><li style="color: rgb(153, 153, 153);">62</li><li style="color: rgb(153, 153, 153);">63</li><li style="color: rgb(153, 153, 153);">64</li><li style="color: rgb(153, 153, 153);">65</li><li style="color: rgb(153, 153, 153);">66</li><li style="color: rgb(153, 153, 153);">67</li><li style="color: rgb(153, 153, 153);">68</li></ul></pre> 
+<h3 id="35-运行与测试"><a name="t6"></a>3.5 运行与测试</h3> 
+<p>运行程序（纯文本文件为 test.txt，生成 HTML 文件为 test.html）：</p> 
+<pre class="prettyprint" name="code"><code class="hljs avrasm has-numbering" onclick="mdcp.copyCode(event)" style="position: unset;">python markup<span class="hljs-preprocessor">.py</span> &lt; test<span class="hljs-preprocessor">.txt</span> &gt; test<span class="hljs-preprocessor">.html</span><div class="hljs-button {2}" data-title="复制（为作者贡献原力分）" data-report-click="{&quot;spm&quot;:&quot;1001.2101.3001.4259&quot;}"></div></code><ul class="pre-numbering" style=""><li style="color: rgb(153, 153, 153);">1</li></ul></pre> 
+<p>获得 test.html 文件之后，我们想在浏览器中看一下我们的文本解释效果。</p> 
+<p><img src="https://img-blog.csdn.net/2018080614193387?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ppYTY2NjY2Ng==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述" title=""></p> 
+
+                </div><div><div></div></div>
+                <link href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/markdown_views-d7a94ec6ab.css" rel="stylesheet">
+                <link href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/style-49037e4d27.css" rel="stylesheet">
+        </div>
+        
+    </article>

@@ -1,0 +1,123 @@
+<div class="forFlow">
+		<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class="post">
+	
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+<h1 id="开发一个django博客网站项目">开发一个Django博客网站项目<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p>需要准备的环境  python3以上</p>
+<h2 id="创建一个虚拟环境以兼容不同的django版本">创建一个虚拟环境(以兼容不同的Django版本)<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<ol>
+<li>创建一个文件夹来专门存放Django(website)</li>
+<li>安装Django<br>
+<code>pip3 install django</code></li>
+<li>打开cmd到website中创建虚拟环境(djangoenv为虚拟环境项目名)<br>
+<code>cd desktop/website</code><br>
+<code>python -m venv djangoenv</code></li>
+<li>继续输入 <code>djangoenv\Scripts\activate</code>就可以将该虚拟环境激活了<br>
+这是每一次使用虚拟环境都要进行的操作<br>
+<img src="https://i.loli.net/2018/07/09/5b4350555d9c9.png" alt="8.PNG" loading="lazy" class="medium-zoom-image"><br>
+以上虚拟环境就创建好了</li>
+</ol>
+<h2 id="创建一个django项目">创建一个Django项目<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<pre highlighted="true"><code class="hljs less">`<span class="hljs-selector-tag">django-admin</span> <span class="hljs-selector-tag">startproject</span> <span class="hljs-selector-tag">one</span>(项目名)
+</code></pre>
+<p><img src="https://i.loli.net/2018/07/09/5b4359f8e7769.png" alt="9.PNG" loading="lazy" class="medium-zoom-image"><br>
+初始化生成文件的用途<br>
+Manage.py 一个在命令行中可以调用的网站管理工具<br>
+one文件夹里<br>
+<strong>init</strong>.py 告诉Python这个文件夹是一个模块<br>
+settings.py one项目中一些配置<br>
+urls.py 网站内各个网址声明<br>
+usgi.py web服务器与django项目的接口</p>
+<h2 id="新建一个一个django-app">新建一个一个Django App<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<pre highlighted="true"><code class="hljs bash">`<span class="hljs-built_in">cd</span> one`
+python manage.py startapp blog(app项目名)
+</code></pre>
+<p>再将App添加到settings.py里INSTALLED_APPS默认包括了一下Django自带的应用:<br>
+<img src="https://i.loli.net/2018/07/09/5b435bb8cdab4.png" alt="10.PNG" loading="lazy" class="medium-zoom-image"></p>
+<ul>
+<li>django.contrib.admin--管理员站点</li>
+<li>django.contrib.auth--认证授权系统</li>
+<li>django.contrib.contenttypes--内容类型框架</li>
+<li>django.contrib.sessions--会话框架</li>
+<li>django.contrib.messages--消息框架</li>
+<li>django.contrib.staticfiles--管理静态文件的框架</li>
+</ul>
+<p>默认开启的某些应用至少需要一个数据表,所以在使用他们之前要创建一些表</p>
+<p><code>python manage.py migrate</code></p>
+<p>这个命令是用来检查INSTALLED_APPS设置,为其中的每个应用创建需要的数据表(作用到数据库文件)</p>
+<h2 id="django的大致运行流程">Django的大致运行流程<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<p><img src="https://i.loli.net/2018/07/09/5b435c3078518.png" alt="11.png" loading="lazy" class="medium-zoom-image"></p>
+<h4 id="对于不同路径的响应一般是在urlspy--blog中修改">对于不同路径的响应(一般是在urls.py--blog中修改)<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p><strong>在blog文件夹下创建一个新的文件:urls.py用于处理网址的解析,同时在one文件夹下的urls.py中添加一条路径</strong><br>
+<code>urls.py--one 		path('',include('blog.urls')),</code></p>
+<ul>
+<li>urls.py--one中要添加<code>from django.urls import path,include</code></li>
+<li>urls.py--blog中添加<code>from django.urls import path</code></li>
+</ul>
+<p>函数include()允许引用其他的URLconfs.,他会截断与此项相匹配的URL部分,并将剩余的字符串发送到URLconf以供进一步处理.包括其他URL模式时总应该使用include(),admin.site.urls是唯一的例外.</p>
+<p>函数path()具有四个参数,两个必须参数:<strong>route</strong>和<strong>view</strong>,两个可选参数: <strong>kwargs</strong>和<strong>name</strong>一般只填写两个必选参数:</p>
+<blockquote>
+<p>route是一个匹配URL的准则.当Django响应一个请求时,他会从urlpatterns的第一项开始,按顺序以此匹配列表中的项,直到找到匹配的项,这些准则不会匹配GET和POST参数或域名.</p>
+<blockquote>
+<p>例如，URLconf 在处理请求 <code>https://www.example.com/myapp/</code> 时，它会尝试匹配 myapp/ 。处理请求 <code>https://www.example.com/myapp/?page=3 </code>时，也只会尝试匹配 myapp/</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<p>path() 参数： view<br>
+当 Django 找到了一个匹配的准则，就会调用这个特定的视图函数，并传入一个 HttpRequest 对象作为第一个参数，被“捕获”的参数以关键字参数的形式传入。<br>
+<strong>route参数可以有一些特定的格式来处理路径</strong></p>
+</blockquote>
+<ul>
+<li><code>&lt;slug:blog_link&gt;--slug可以识别字符和数字</code></li>
+<li><code>&lt;int:blog_id&gt;--int用于识别数字,表示这个网址是个数字存到blog_id这个变量里</code></li>
+<li><code>&lt;str:blog_title&gt;--str用于识别字符串</code></li>
+</ul>
+<p><img src="https://i.loli.net/2018/07/09/5b4378d54cd9c.png" alt="13.png" loading="lazy" class="medium-zoom-image"></p>
+<p><img src="https://i.loli.net/2018/07/09/5b4365c547e1a.png" alt="14.png" loading="lazy" class="medium-zoom-image"></p>
+<p>如上图所示有一个默认的路径<code>http://127.0.0.1:8000/admin/</code></p>
+<h4 id="编写模型">编写模型<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>模型是您的数据唯一而且准确的信息来源.它包含您正在存储的数据的重要字段和行为.一般来说,每一个模型都映射一个数据库表</p>
+<ul>
+<li>每个模型都是一个python类,这些类继承django.db.models.Model</li>
+<li>模型类的每个属性都相当于一个数据库字段</li>
+<li>综上,Django正在给你一个自动生成访问数据库的API</li>
+</ul>
+<p><img src="https://i.loli.net/2018/07/09/5b4385bc7a038.png" alt="19.png" loading="lazy" class="medium-zoom-image"></p>
+<p><img src="https://i.loli.net/2018/07/09/5b4385bc7a9b4.png" alt="20.png" loading="lazy" class="medium-zoom-image"></p>
+<p>三个关联模型是为了防止出现重复过多的问题(方便添加数据)</p>
+<p><img src="https://i.loli.net/2018/07/09/5b4385be5888d.png" alt="21.png" loading="lazy" class="medium-zoom-image"></p>
+<p>在models.py文件中建立一个Post模型,还有与之相关联的Category,Tag模型</p>
+<ul>
+<li>ForeignKey()--一般用于一对多的模型</li>
+<li>ManyToManyField()--一般用于多对多的模型</li>
+<li>关联作者模型有现成的直接引入<br>
+<code>from django.contrib.auth.models import User</code></li>
+</ul>
+<p><img src="https://i.loli.net/2018/07/10/5b43879f7210a.png" alt="22.png" loading="lazy" class="medium-zoom-image"></p>
+<h5 id="然后想要在后台直接操作这三个数据需要现在adminpy中注册一下">然后,想要在后台直接操作这三个数据,需要现在admin.py中注册一下<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h5>
+<p><img src="https://i.loli.net/2018/07/10/5b44791801f8b.png" alt="24.png" loading="lazy" class="medium-zoom-image"></p>
+<ul>
+<li>
+<p><code>from .models import Post,Category,Tag</code>--将Post,Category,Tag从models.py中导入</p>
+</li>
+<li>
+<p><code>admin.site.register </code>--进行注册</p>
+</li>
+</ul>
+<h5 id="最后每当我们在models做了修改之后都需要执行两个操作">最后每当我们在models做了修改之后都需要执行两个操作<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h5>
+<p><code>python manage.py makemigrations</code><br>
+<code>python manage.py migrate</code></p>
+<p>第一个命令用于检测你对模型文件的修改,并且把修改的部分作为一次迁移(这是一种对于变化的存储形式)<br>
+第二个命令,在数据库中创建新定义的模型的数据表</p>
+
+</div>
+<div class="clear"></div>
+
+
+
+	</div>

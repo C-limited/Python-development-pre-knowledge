@@ -1,0 +1,69 @@
+<div id="content_views" class="htmledit_views">
+                    <div id="cnblogs_post_body" class="blogpost-body"> 
+ <p>SymPy是符号数学的<a href="https://so.csdn.net/so/search?from=pc_blog_highlight&amp;q=Python" target="_blank" class="hl hl-1">Python</a>库。它的目标是成为一个全功能的计算机代数系统，同时保持代码简洁、易于理解和扩展</p> 
+ <p>服务器Ubuntu</p> 
+ <p>1.安装Python</p> 
+ <p>2.安装SymPy库</p> 
+ <div class="cnblogs_Highlighter"> 
+  <pre><code class="language-csharp hljs">sudo pip install sympy
+</code><div class="hljs-button {2}" data-title="复制（为作者贡献原力分）" data-report-click="{&quot;spm&quot;:&quot;1001.2101.3001.4259&quot;}" onclick="hljs.copyCode(event)"></div></pre> 
+ </div> 
+ <p>3.解一元一次方程</p> 
+ <p>x*2-6=0</p> 
+ <div class="cnblogs_Highlighter"> 
+  <pre><code class="language-python hljs"><span class="hljs-built_in">print</span> solve(x * <span class="hljs-number">3</span> - <span class="hljs-number">6</span>, x)
+</code><div class="hljs-button {2}" data-title="复制（为作者贡献原力分）" data-report-click="{&quot;spm&quot;:&quot;1001.2101.3001.4259&quot;}" onclick="hljs.copyCode(event)"></div></pre> 
+ </div> 
+ <p>结果　　</p> 
+ <p><img src="https://images2015.cnblogs.com/blog/798214/201701/798214-20170118125738250-1918525211.png" alt=""></p> 
+ <p>4.解二元一次方程</p> 
+ <p><img src="https://images2015.cnblogs.com/blog/798214/201701/798214-20170118124605687-220288294.png" alt=""></p> 
+ <div class="cnblogs_Highlighter"> 
+  <pre><code class="language-python hljs"><ol class="hljs-ln" style="width:100%"><li><div class="hljs-ln-numbers"><div class="hljs-ln-line hljs-ln-n" data-line-number="1"></div></div><div class="hljs-ln-code"><div class="hljs-ln-line"><span class="hljs-keyword">from</span> sympy <span class="hljs-keyword">import</span> *</div></div></li><li><div class="hljs-ln-numbers"><div class="hljs-ln-line hljs-ln-n" data-line-number="2"></div></div><div class="hljs-ln-code"><div class="hljs-ln-line">x=Symbol(<span class="hljs-string">'x'</span>)</div></div></li><li><div class="hljs-ln-numbers"><div class="hljs-ln-line hljs-ln-n" data-line-number="3"></div></div><div class="hljs-ln-code"><div class="hljs-ln-line">y=Symbol(<span class="hljs-string">'y'</span>)</div></div></li><li><div class="hljs-ln-numbers"><div class="hljs-ln-line hljs-ln-n" data-line-number="4"></div></div><div class="hljs-ln-code"><div class="hljs-ln-line"><span class="hljs-built_in">print</span> solve([y+x-<span class="hljs-number">1</span>,<span class="hljs-number">3</span>*x+<span class="hljs-number">2</span>*y-<span class="hljs-number">5</span>],[x,y])</div></div></li></ol></code><div class="hljs-button {2}" data-title="复制（为作者贡献原力分）" data-report-click="{&quot;spm&quot;:&quot;1001.2101.3001.4259&quot;}" onclick="hljs.copyCode(event)"></div></pre> 
+ </div> 
+ <p>结果</p> 
+ <p><img src="https://images2015.cnblogs.com/blog/798214/201701/798214-20170118125357625-13001206.png" alt=""></p> 
+ <p>&nbsp;</p> 
+ <p>注：(1)在计算之前要将变量设为符号</p> 
+ <p>　　(2)要将变量一到一侧 y-1+x=0 &nbsp; 3x+2y-5=0</p> 
+ <p>5.求极限limit()</p> 
+ <div class="cnblogs_Highlighter"> 
+  <pre><code class="language-python hljs"><ol class="hljs-ln" style="width:100%"><li><div class="hljs-ln-numbers"><div class="hljs-ln-line hljs-ln-n" data-line-number="1"></div></div><div class="hljs-ln-code"><div class="hljs-ln-line"><span class="hljs-keyword">from</span> sympy <span class="hljs-keyword">import</span> *</div></div></li><li><div class="hljs-ln-numbers"><div class="hljs-ln-line hljs-ln-n" data-line-number="2"></div></div><div class="hljs-ln-code"><div class="hljs-ln-line">x = Symbol(<span class="hljs-string">'x'</span>)</div></div></li><li><div class="hljs-ln-numbers"><div class="hljs-ln-line hljs-ln-n" data-line-number="3"></div></div><div class="hljs-ln-code"><div class="hljs-ln-line"><span class="hljs-built_in">print</span> limit(<span class="hljs-number">1</span>/x**<span class="hljs-number">2</span>, x, <span class="hljs-number">0</span>)</div></div></li></ol></code><div class="hljs-button {2}" data-title="复制（为作者贡献原力分）" data-report-click="{&quot;spm&quot;:&quot;1001.2101.3001.4259&quot;}" onclick="hljs.copyCode(event)"></div></pre> 
+ </div> 
+ <p>结果oo</p> 
+ <div class="cnblogs_Highlighter"> 
+  <pre><code class="language-python hljs"><ol class="hljs-ln" style="width:100%"><li><div class="hljs-ln-numbers"><div class="hljs-ln-line hljs-ln-n" data-line-number="1"></div></div><div class="hljs-ln-code"><div class="hljs-ln-line"><span class="hljs-keyword">from</span> sympy <span class="hljs-keyword">import</span> *</div></div></li><li><div class="hljs-ln-numbers"><div class="hljs-ln-line hljs-ln-n" data-line-number="2"></div></div><div class="hljs-ln-code"><div class="hljs-ln-line">x = Symbol(<span class="hljs-string">'x'</span>)</div></div></li><li><div class="hljs-ln-numbers"><div class="hljs-ln-line hljs-ln-n" data-line-number="3"></div></div><div class="hljs-ln-code"><div class="hljs-ln-line"><span class="hljs-built_in">print</span> limit(x*(sqrt(x**<span class="hljs-number">2</span> + <span class="hljs-number">1</span>) - x), x, oo)</div></div></li></ol></code><div class="hljs-button {2}" data-title="复制（为作者贡献原力分）" data-report-click="{&quot;spm&quot;:&quot;1001.2101.3001.4259&quot;}" onclick="hljs.copyCode(event)"></div></pre> 
+ </div> 
+ <p>结果1/2</p> 
+ <p>注：</p> 
+ <div class="cnblogs_Highlighter"> 
+  <pre><code class="language-python hljs"><ol class="hljs-ln" style="width:100%"><li><div class="hljs-ln-numbers"><div class="hljs-ln-line hljs-ln-n" data-line-number="1"></div></div><div class="hljs-ln-code"><div class="hljs-ln-line"><span class="hljs-keyword">from</span> sympy <span class="hljs-keyword">import</span> *</div></div></li><li><div class="hljs-ln-numbers"><div class="hljs-ln-line hljs-ln-n" data-line-number="2"></div></div><div class="hljs-ln-code"><div class="hljs-ln-line">x = Symbol(<span class="hljs-string">'x'</span>)</div></div></li><li><div class="hljs-ln-numbers"><div class="hljs-ln-line hljs-ln-n" data-line-number="3"></div></div><div class="hljs-ln-code"><div class="hljs-ln-line">pprint(x*(sqrt(x**<span class="hljs-number">2</span> + <span class="hljs-number">1</span>) - x))</div></div></li></ol></code><div class="hljs-button {2}" data-title="复制（为作者贡献原力分）" data-report-click="{&quot;spm&quot;:&quot;1001.2101.3001.4259&quot;}" onclick="hljs.copyCode(event)"></div></pre> 
+ </div> 
+ <p>　结果　</p> 
+ <p>　<img src="https://images2015.cnblogs.com/blog/798214/201701/798214-20170118132702406-1962419105.png" alt=""></p> 
+ <p>6.求积分</p> 
+ <p><img src="https://images2015.cnblogs.com/blog/798214/201701/798214-20170118133016171-327684770.png" alt=""></p> 
+ <p>&nbsp;</p> 
+ <div class="cnblogs_Highlighter"> 
+  <pre><code class="language-python hljs"><ol class="hljs-ln" style="width:100%"><li><div class="hljs-ln-numbers"><div class="hljs-ln-line hljs-ln-n" data-line-number="1"></div></div><div class="hljs-ln-code"><div class="hljs-ln-line"><span class="hljs-keyword">from</span> sympy <span class="hljs-keyword">import</span> *</div></div></li><li><div class="hljs-ln-numbers"><div class="hljs-ln-line hljs-ln-n" data-line-number="2"></div></div><div class="hljs-ln-code"><div class="hljs-ln-line">n = Symbol(<span class="hljs-string">'n'</span>)</div></div></li><li><div class="hljs-ln-numbers"><div class="hljs-ln-line hljs-ln-n" data-line-number="3"></div></div><div class="hljs-ln-code"><div class="hljs-ln-line">s = ((n+<span class="hljs-number">3</span>)/(n+<span class="hljs-number">2</span>))**n</div></div></li><li><div class="hljs-ln-numbers"><div class="hljs-ln-line hljs-ln-n" data-line-number="4"></div></div><div class="hljs-ln-code"><div class="hljs-ln-line"><span class="hljs-built_in">print</span> limit(s, n, oo)</div></div></li></ol></code><div class="hljs-button {2}" data-title="复制（为作者贡献原力分）" data-report-click="{&quot;spm&quot;:&quot;1001.2101.3001.4259&quot;}" onclick="hljs.copyCode(event)"></div></pre> 
+ </div> 
+ <p>　结果</p> 
+ <p><img src="https://images2015.cnblogs.com/blog/798214/201701/798214-20170118132921203-44459243.png" alt=""></p> 
+ <p>注：</p> 
+ <ul><li>oo 无穷大</li><li>E e</li><li>pi 圆周率</li></ul>
+ <p>&nbsp;7.定积分</p> 
+ <p><img src="https://images2015.cnblogs.com/blog/798214/201701/798214-20170118133745609-1496331902.png" alt=""></p> 
+ <div class="cnblogs_Highlighter"> 
+  <pre><code class="language-python hljs"><ol class="hljs-ln" style="width:100%"><li><div class="hljs-ln-numbers"><div class="hljs-ln-line hljs-ln-n" data-line-number="1"></div></div><div class="hljs-ln-code"><div class="hljs-ln-line"><span class="hljs-keyword">from</span> sympy <span class="hljs-keyword">import</span> *</div></div></li><li><div class="hljs-ln-numbers"><div class="hljs-ln-line hljs-ln-n" data-line-number="2"></div></div><div class="hljs-ln-code"><div class="hljs-ln-line">t = Symbol(<span class="hljs-string">'t'</span>)</div></div></li><li><div class="hljs-ln-numbers"><div class="hljs-ln-line hljs-ln-n" data-line-number="3"></div></div><div class="hljs-ln-code"><div class="hljs-ln-line">x = Symbol(<span class="hljs-string">'x'</span>)</div></div></li><li><div class="hljs-ln-numbers"><div class="hljs-ln-line hljs-ln-n" data-line-number="4"></div></div><div class="hljs-ln-code"><div class="hljs-ln-line">m = integrate(sin(t)/(pi-t),(t,<span class="hljs-number">0</span>,x))</div></div></li><li><div class="hljs-ln-numbers"><div class="hljs-ln-line hljs-ln-n" data-line-number="5"></div></div><div class="hljs-ln-code"><div class="hljs-ln-line">n = integrate(m,(x,<span class="hljs-number">0</span>,pi))</div></div></li><li><div class="hljs-ln-numbers"><div class="hljs-ln-line hljs-ln-n" data-line-number="6"></div></div><div class="hljs-ln-code"><div class="hljs-ln-line"><span class="hljs-built_in">print</span> n</div></div></li></ol></code><div class="hljs-button {2}" data-title="复制（为作者贡献原力分）" data-report-click="{&quot;spm&quot;:&quot;1001.2101.3001.4259&quot;}" onclick="hljs.copyCode(event)"></div></pre> 
+ </div> 
+ <p>结果</p> 
+ <p>2</p> 
+ <p>　　</p> 
+ <p>　</p> 
+ <p>　</p> 
+ <p>&nbsp;</p> 
+ <p>　　</p> 
+ <p>&nbsp;</p> 
+</div> 
+
+                </div>
