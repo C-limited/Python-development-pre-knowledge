@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <div class="container">
+    <h1>用户注册</h1>
+    <form action="" method="post" novalidate>
+    <div>
+        {{ form.name.label }}
+        {{ form.name }}
+    </div>
+        {% for err in form.name.errors %}
+    <div class="col-md-12">
+    <p style="color: red">{{ err }}</p>
+    </div>
+        {% endfor %}    
+    <div>
+        {{ form.password.label }}
+        {{ form.password }}
+        {% for err in form.password.errors %}
+    <div>
+    <p style="color: red">{{ err }}</p>
+    </div>
+        {% endfor %}
+    <div>
+        {{ form.repassword.label }}
+        {{ form.repassword }}
+        {% for err in form.repassword.errors %}
+    <div>
+    <p style="color: red">{{ err }}</p>
+    </div>
+        {% endfor %}
+    <div>
+        {{ form.tel.label }}
+        {{ form.tel }}
+        {% for err in form.tel.errors %}
+    <div>
+    <p style="color: red">{{ err }}</p>
+    </div>
+        {% endfor %}
+    </div>
+        {{ form.csrf_token }}
+        {{ form.submit }}
+    </form>
+    <div>
+    {% if data  %}
+    注册成功！
+    {% endif %}
+    </div>
+
+    </div>
+</body>
+</html>
